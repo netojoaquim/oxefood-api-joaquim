@@ -29,15 +29,18 @@ public class Produto extends EntidadeAuditavel {
     private String codigo;
 
     @Column
+    private String titulo;
+
+    @Column
     private String descricao;
 
     @Column
     private Double valorUnitario;
 
     @Column
-    private Integer tempoEntregaMinino;
+    private Integer tempoEntregaMinimo;
 
     @Column
     private Integer tempoEntregaMaximo;
-    
+
 }

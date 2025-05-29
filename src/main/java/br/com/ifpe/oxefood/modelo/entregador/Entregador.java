@@ -69,7 +69,7 @@ public class Entregador extends EntidadeAuditavel{
 
     @Column
     private String enderecoCep;
-    
+
     @Column
     private String enderecoUf;
 
