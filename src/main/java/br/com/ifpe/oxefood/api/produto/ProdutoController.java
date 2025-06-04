@@ -1,7 +1,6 @@
 package br.com.ifpe.oxefood.api.produto;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
-import br.com.ifpe.oxefood.api.cliente.ClienteRequest;
-import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.produto.Produto;
 import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
+import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/produto")
@@ -28,12 +26,17 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
+    @Autowired
+    private CategoriaProdutoService categoriaProdutoService;
+
     @PostMapping
     public ResponseEntity<Produto> save(@RequestBody ProdutoRequest request){
         Produto entradaProduto = request.build();
+        entradaProduto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
         Produto produto = produtoService.save(entradaProduto);
         return new ResponseEntity<Produto>(produto,HttpStatus.CREATED);
     }
+
     @GetMapping
     public List<Produto> listarTodos() {
         return produtoService.listarTodos();
@@ -43,9 +46,13 @@ public class ProdutoController {
     public Produto obterPorID(@PathVariable Long id) {
         return produtoService.obterPorID(id);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoRequest request) {
-        produtoService.update(id, request.build());
+        Produto produto= request.build();
+        produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
+        produtoService.update(id, produto);
+
         return ResponseEntity.ok().build();
     }
 
@@ -53,6 +60,7 @@ public class ProdutoController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
        produtoService.delete(id);
+
        return ResponseEntity.ok().build();
    }
 }
