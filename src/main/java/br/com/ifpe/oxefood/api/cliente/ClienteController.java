@@ -20,9 +20,9 @@ import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cliente")
-@CrossOrigin
 public class ClienteController {
 
     @Autowired
@@ -57,6 +57,8 @@ public class ClienteController {
         clienteService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    //endereços
 
     @PostMapping("/endereco/{clienteId}")
     public ResponseEntity<EnderecoCliente> adicionarEnderecoCliente(@PathVariable("clienteId") Long clienteId,
