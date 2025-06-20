@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProduto;
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
+import jakarta.validation.Valid;
 
 
 
@@ -30,7 +31,7 @@ public class CategoriaProdutoController {
     private CategoriaProdutoService categoriaProdutoService;
 
     @PostMapping
-    public ResponseEntity<CategoriaProduto> save(@RequestBody CategoriaProdutoRequest request) {
+    public ResponseEntity<CategoriaProduto> save(@RequestBody @Valid CategoriaProdutoRequest request) {
         CategoriaProduto categoriaProdutoNovo = request.build();
         CategoriaProduto categoriaProduto = categoriaProdutoService.save(categoriaProdutoNovo);
         categoriaProdutoService.save(categoriaProdutoNovo);
@@ -47,7 +48,7 @@ public class CategoriaProdutoController {
         return categoriaProdutoService.obterPorID(id);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaProduto> update(@PathVariable("id") Long id, @RequestBody CategoriaProdutoRequest request) {
+    public ResponseEntity<CategoriaProduto> update(@PathVariable("id") Long id, @RequestBody @Valid CategoriaProdutoRequest request) {
 
         CategoriaProduto categoriaProduto = request.build();
         categoriaProdutoService.update(id, categoriaProduto);

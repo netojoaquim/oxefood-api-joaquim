@@ -14,9 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
-@Table(name= "Entregador")
+@Table(name = "Entregador")
 @SQLRestriction("habilitado = true")
 
 @Builder
@@ -25,13 +24,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
+public class Entregador extends EntidadeAuditavel {
 
-public class Entregador extends EntidadeAuditavel{
-
-    @Column
+    @Column(nullable = false, length = 100)
     private String nome;
 
-    @Column
+    @Column(unique = true)
     private String cpf;
 
     @Column

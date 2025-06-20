@@ -29,7 +29,7 @@ public class Produto extends EntidadeAuditavel {
     @ManyToOne
     private CategoriaProduto categoria;
 
-    @Column
+    @Column(unique = true)
     private String codigo;
 
     @Column

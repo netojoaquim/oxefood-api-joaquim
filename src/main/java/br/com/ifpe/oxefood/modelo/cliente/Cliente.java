@@ -1,21 +1,28 @@
 package br.com.ifpe.oxefood.modelo.cliente;
 
 import java.time.LocalDate;
-
-import org.hibernate.annotations.SQLRestriction;
 import java.util.List;
 
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.validator.constraints.UniqueElements;
+
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "Cliente")
@@ -26,24 +33,29 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente extends EntidadeAuditavel  {
+public class Cliente extends EntidadeAuditavel {
 
-   @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
-   private List<EnderecoCliente> enderecos;
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private Usuario usuario;
 
-   @Column
-   private String nome;
+    @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<EnderecoCliente> enderecos;
 
-   @Column
-   private LocalDate dataNascimento;
+    @Column(nullable = false, length = 100)
+    private String nome;
 
-   @Column
-   private String cpf;
+    @Column
+    private LocalDate dataNascimento;
 
-   @Column
-   private String foneCelular;
+    @UniqueElements(message = "único cpf")
+    private String cpf;
 
-   @Column
-   private String foneFixo;
+    @Column
+    private String foneCelular;
+
+    @Column
+    private String foneFixo;
 
 }
