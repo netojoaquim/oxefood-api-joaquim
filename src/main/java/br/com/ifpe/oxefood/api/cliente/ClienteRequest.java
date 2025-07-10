@@ -1,7 +1,7 @@
 package br.com.ifpe.oxefood.api.cliente;
 
 import java.time.LocalDate;
-
+import java.util.Arrays;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -29,7 +29,7 @@ public class ClienteRequest {
     @NotBlank(message = "A senha é de preenchimento obrigatório")
     private String password;
 
-
+    @NotNull(message = "O campo Nome é de preenchimento obrigatório")
     @NotBlank(message = "O Nome é de preenchimento obrigatório")
     @Length(max = 100, message = "O Nome deverá ter no máximo {max} caracteres")
     private String nome;

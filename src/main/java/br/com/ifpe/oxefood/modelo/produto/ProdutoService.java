@@ -15,7 +15,7 @@ public class ProdutoService {
     private ProdutoRepository repository;
 
     @Transactional
-    public Produto save(Produto produto){
+    public Produto save(Produto produto) throws ProdutoException {
 
         if (produto.getValorUnitario() < 10) {
             throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
