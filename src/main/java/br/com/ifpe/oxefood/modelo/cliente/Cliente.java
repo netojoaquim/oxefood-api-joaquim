@@ -3,8 +3,9 @@ package br.com.ifpe.oxefood.modelo.cliente;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
@@ -20,9 +21,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "Cliente")
@@ -49,7 +47,8 @@ public class Cliente extends EntidadeAuditavel {
     @Column
     private LocalDate dataNascimento;
 
-    @UniqueElements(message = "único cpf")
+    //@UniqueElements(message = "único cpf")
+    @Column
     private String cpf;
 
     @Column

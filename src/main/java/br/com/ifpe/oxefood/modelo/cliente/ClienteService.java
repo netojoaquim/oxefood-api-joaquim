@@ -33,7 +33,7 @@ public class ClienteService {
         for (Perfil perfil : cliente.getUsuario().getRoles()) {
             perfil.setHabilitado(Boolean.TRUE);
             perfilUsuarioRepository.save(perfil);
-        }
+        } 
         cliente.setHabilitado(Boolean.TRUE);
         return repository.save(cliente);
 
