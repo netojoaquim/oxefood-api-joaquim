@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.util.exception.ProdutoException;
 import jakarta.transaction.Transactional;
 
@@ -15,13 +16,14 @@ public class ProdutoService {
     private ProdutoRepository repository;
 
     @Transactional
-    public Produto save(Produto produto) throws ProdutoException {
+    public Produto save(Produto produto, Usuario usuarioLogado) throws ProdutoException {
 
         if (produto.getValorUnitario() < 10) {
             throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
         }
 
         produto.setHabilitado(Boolean.TRUE);
+        produto.setCriadoPor(usuarioLogado);
         return repository.save(produto);
     }
 
@@ -36,9 +38,11 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void update(Long id, Produto produtoAlterado) {
+    public Produto update(Long id, Produto produtoAlterado, Usuario usuarioLogado) throws ProdutoException {
 
-        Produto produto = repository.findById(id).get();
+        Produto produto = repository.findById(id)
+                .orElseThrow(() -> new ProdutoException("Produto não encontrado com id: " + id));
+
         produto.setCategoria(produtoAlterado.getCategoria());
         produto.setCodigo(produtoAlterado.getCodigo());
         produto.setTitulo(produtoAlterado.getTitulo());
@@ -47,8 +51,11 @@ public class ProdutoService {
         produto.setTempoEntregaMaximo(produtoAlterado.getTempoEntregaMaximo());
         produto.setTempoEntregaMinimo(produtoAlterado.getTempoEntregaMinimo());
 
-        repository.save(produto);
+        produto.setUltimaModificacaoPor(usuarioLogado);
+
+        return repository.save(produto);
     }
+
 
     @Transactional
     public void delete(Long id) {
@@ -69,18 +76,18 @@ public class ProdutoService {
        } else if (
            (codigo == null || "".equals(codigo)) &&
            (titulo != null && !"".equals(titulo)) &&
-           (idCategoria == null)) {    
+           (idCategoria == null)) {
                listaProdutos = repository.findByTituloContainingIgnoreCaseOrderByTituloAsc(titulo);
        } else if (
            (codigo == null || "".equals(codigo)) &&
            (titulo == null || "".equals(titulo)) &&
            (idCategoria != null)) {
-               listaProdutos = repository.consultarPorCategoria(idCategoria); 
+               listaProdutos = repository.consultarPorCategoria(idCategoria);
        } else if (
            (codigo == null || "".equals(codigo)) &&
            (titulo != null && !"".equals(titulo)) &&
            (idCategoria != null)) {
-               listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria); 
+               listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria);
        }
 
        return listaProdutos;

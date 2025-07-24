@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class TratadorErros {
 
-   @ExceptionHandler(Exception.class)
-   public ResponseEntity tratarErro500(Exception ex) {
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity tratarErro500(Exception ex) {
 
-       return ResponseEntity.internalServerError().body(ex.getMessage());
-   }
+        return ResponseEntity.internalServerError().body(ex.getMessage());
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {

@@ -1,7 +1,6 @@
 package br.com.ifpe.oxefood.api.produto;
 
 import br.com.ifpe.oxefood.modelo.produto.Produto;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
